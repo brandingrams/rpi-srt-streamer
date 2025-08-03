@@ -13,7 +13,7 @@ if [[ $? -ne 0 || -z "$COMMITS" ]]; then
 fi
 
 # Parse the second most recent commit message
-LAST_COMMIT_MSG=$(echo "$COMMITS" | jq -r '.[1].commit.message')
+LAST_COMMIT_MSG=$(echo "$COMMITS" | jq -r '.[0].commit.message')
 
 if [[ -z "$LAST_COMMIT_MSG" || "$LAST_COMMIT_MSG" == "null" ]]; then
   echo "[ERROR] Could not parse commit message."
@@ -22,7 +22,7 @@ fi
 
 # Ask user to confirm update
 echo
-echo "The previous update was:"
+echo "The most recent update is:"
 echo "→ \"$LAST_COMMIT_MSG\""
 echo
 read -rp "Do you want to update to the latest version? [y/n]: " CONFIRM
