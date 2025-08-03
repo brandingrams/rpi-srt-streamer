@@ -66,7 +66,7 @@ You can use a breadboard to connect the screen to the Pi if thats easier for you
 
 The GPIO pins are as follows:
 
-0.96" OLED Screen:
+#### 0.96" OLED Screen:
 * VCC: Pin 1 (3.3V)
 * GND: Pin 9 (GND)
 * SDA: Pin 3 (GPIO2)
@@ -74,8 +74,16 @@ The GPIO pins are as follows:
 
 [0.96" OLED Screen YouTube Refrence](https://youtu.be/pdaDvPCdAlY?t=123)
 
+#### 1.8" OLED Screen:
+* VCC: Pin 1 (3.3V)
+* GND: Pin 9 (GND)
+* SDA: Pin 3 (GPIO2)
+* SCL: Pin 5 (GPIO3)
 
+[1.8" OLED Screen YouTube Refrence]()
 
+#### 3.5" TFT Screen:
+Driver: ILI9486
 
 
 ### 1. Flash Ubuntu Server <!--- {ignore=true} -->
