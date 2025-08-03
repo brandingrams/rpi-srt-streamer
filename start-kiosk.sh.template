@@ -12,6 +12,7 @@ if [[ "__SCREEN__" == "true" && -n "__SCREEN_SIZE__" ]]; then
   SCALE_FACTOR="1"
 fi
 
+unclutter-xfixes --timeout 0 --hide-on-touch &
 chromium-browser \
   --noerrdialogs \
   --disable-infobars \

@@ -319,7 +319,7 @@ fi
 
 if [[ $SCREEN == "true" && $SCREEN_SIZE == "0350" ]]; then
     echo "[INFO] Installing Screen Interface..."
-    sudo apt-get install -y chromium-browser xdotool unclutter
+    sudo apt-get install -y chromium-browser xdotool unclutter unclutter-xfixes
 
     mkdir -p /home/root/kiosk
     cd /home/root/kiosk
