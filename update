@@ -1,0 +1,36 @@
+#!/bin/bash
+
+REPO="https://api.github.com/repos/socialites/rpi-srt-streamer/commits?sha=main"
+
+echo "[INFO] Checking latest commits from main branch..."
+
+# Fetch the last two commits on main
+COMMITS=$(curl -fsSL "$REPO")
+
+if [[ $? -ne 0 || -z "$COMMITS" ]]; then
+  echo "[ERROR] Failed to fetch commits from GitHub."
+  exit 1
+fi
+
+# Parse the second most recent commit message
+LAST_COMMIT_MSG=$(echo "$COMMITS" | jq -r '.[1].commit.message')
+
+if [[ -z "$LAST_COMMIT_MSG" || "$LAST_COMMIT_MSG" == "null" ]]; then
+  echo "[ERROR] Could not parse commit message."
+  exit 1
+fi
+
+# Ask user to confirm update
+echo
+echo "The previous update was:"
+echo "→ \"$LAST_COMMIT_MSG\""
+echo
+read -rp "Do you want to update to the latest version? [y/n]: " CONFIRM
+
+if [[ "${CONFIRM,,}" != "y" ]]; then
+  echo "[INFO] Update canceled."
+  exit 0
+fi
+
+echo "[INFO] Updating..."
+curl -fsSL https://raw.githubusercontent.com/socialites/rpi-srt-streamer/main/install.sh | sudo bash

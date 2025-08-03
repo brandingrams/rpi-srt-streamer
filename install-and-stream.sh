@@ -81,11 +81,12 @@ fi
 ### === Install Update Script === ###
 echo "[INFO] Installing update script to /usr/local/bin/update..."
 
-sudo tee /usr/local/bin/update > /dev/null <<'EOF'
-#!/bin/bash
-curl -fsSL https://raw.githubusercontent.com/socialites/rpi-srt-streamer/main/install.sh | sudo bash
-EOF
+# sudo tee /usr/local/bin/update > /dev/null <<'EOF'
+# #!/bin/bash
+# curl -fsSL https://raw.githubusercontent.com/socialites/rpi-srt-streamer/main/install.sh | sudo bash
+# EOF
 
+generate_config /usr/local/bin/update
 sudo chmod +x /usr/local/bin/update
 
 ### === Install Dependencies === ###
