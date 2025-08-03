@@ -1,6 +1,6 @@
 #!/bin/bash
 
-unclutter-xfixes --timeout 0 --hide-on-touch &
+unclutter-xfixes --timeout 0 --hide-on-touch --always --exclude-root --start-hidden  &
 
 sleep 5
 
