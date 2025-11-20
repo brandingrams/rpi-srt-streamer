@@ -201,11 +201,21 @@ sudo systemctl restart srt-dashboard-server.service
 ### === Detect Audio Device === ###
 AUDIO_CARD=$(arecord -l | grep -i "Cam Link" -A 1 | grep -oP 'card \K\d+')
 if [ -z "$AUDIO_CARD" ]; then
-  echo "[ERROR] Could not auto-detect Camlink audio device."
-  exit 1
+  echo "[WARN] Could not auto-detect Camlink audio device. Streaming without audio."
+  export FFMPEG_AUDIO_INPUT=""
+  export FFMPEG_AUDIO_MAP="-an"
+else
+  AUDIO_DEVICE="hw:${AUDIO_CARD},0"
+  if arecord -D "$AUDIO_DEVICE" -f S16_LE -r 48000 -d 1 -t null /dev/null >/dev/null 2>&1; then
+    export FFMPEG_AUDIO_INPUT="-f alsa -i ${AUDIO_DEVICE}"
+    export FFMPEG_AUDIO_MAP="-map 1:a"
+    echo "[INFO] Using audio device: ${AUDIO_DEVICE}"
+  else
+    echo "[WARN] Audio device ${AUDIO_DEVICE} is busy. Streaming without audio."
+    export FFMPEG_AUDIO_INPUT=""
+    export FFMPEG_AUDIO_MAP="-an"
+  fi
 fi
-export AUDIO_DEVICE="hw:${AUDIO_CARD},0"
-echo "[INFO] Using audio device: $AUDIO_DEVICE"
 
 ### === Create systemd Service for SRT Streamer (Tee Pipeline) === ###
 echo "[INFO] Creating SRT Streamer systemd service..."

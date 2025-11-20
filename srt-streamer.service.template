@@ -7,11 +7,11 @@ Requires=network-watcher.service
 ExecStartPre=/usr/local/bin/reset-camlink.sh
 ExecStart=/bin/bash -c '/usr/bin/ffmpeg \
   -f v4l2 -framerate 30 -video_size 3840x2160 -pixel_format nv12 -i /dev/video0 \
-  -f alsa -i $AUDIO_DEVICE \
+  ${FFMPEG_AUDIO_INPUT} \
   -filter_complex "[0:v]split=2[main][preview];[preview]scale=640:360,format=yuv420p[previewout]" \
   -map "[previewout]" -c:v libx264 -preset ultrafast -tune zerolatency -b:v 500k \
   -f hls -hls_time 2 -hls_list_size 3 -hls_flags delete_segments /boot/firmware/hls/preview.m3u8 \
-  -map "[main]" -map 1:a -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k \
+  -map "[main]" ${FFMPEG_AUDIO_MAP} -c:v libx264 -preset ultrafast -tune zerolatency -b:v 2500k \
   -f mpegts "srt://$DEST_HOST:$SRT_PORT?pkt_size=1316&mode=caller" \
   || (echo "[ERROR] ffmpeg exited with failure" >> /var/log/srt-streamer.log; exit 1)'
 Restart=always
